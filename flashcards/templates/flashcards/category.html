@@ -19,7 +19,7 @@
     				</div>
 					
                 {% endfor %}
-             </ul>
+             </ul>	
         {% else %}
     		<h2 class="card-title h2">Set: {{category}}</h2>
     		<select class="browser-default custom-select" onchange="location = this.value;">
@@ -30,17 +30,59 @@
   			</select>
   			
   			{% if cards  %}
+ <div class="slideshow-container">
 				{% for card in cards %}
-	            	<div class="float-left" style="margin:10px; border-color:black;">
-	               	<strong>{{card.title}}</strong>
-	               	<div>{{card.meaning}}</div>
-	           	</div>
+<div style="width:100px; height:200px;" class="mySlides fade">
+ <img src="img_mountains_wide.jpg" style="width:200px; height:100px;">
+  <div style="display:block; width:200px; height:100px"class="text">{{card.title}}</div>
+</div>
 	            {% endfor %}
+<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+<a class="next" onclick="plusSlides(1)">&#10095;</a>
+	            
+</div>
 	           {% else %}
 	           <div> No card found </div>
 	           {% endif %}
     		
     	 {% endif %}
     </div>
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+<script>
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1}    
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";  
+  }
+  for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";  
+  dots[slideIndex-1].className += " active";
+}
+</script>
     	
 {% endblock %}
