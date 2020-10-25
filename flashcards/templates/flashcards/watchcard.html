@@ -4,17 +4,15 @@
 
     <div>
     	<h2 class="card-title h2">Watched Cards</h2>
-    	{% for item in items %}
+    	{% for card in cards %}
 		<div>
-			<a href="{% url 'viewitem' item.id %}" class="btn" style="width:100%; border-color:black; Margin:10px;">
-			<img class="rounded float-left" src="{{item.imageurl}}" style=" max-height: 230px; max-width:230px;" >
+			<a href="{% url 'viewcard' card.id %}" class="btn" style="width:100%; border-color:black; Margin:10px;">
+			<img class="rounded float-left" src="{{card.imageurl}}" style=" max-height: 230px; max-width:230px;" >
 			<div class="float-left">
-			<div>Category: {{item.category}}</div>
-		   	<strong>title: {{item.title}}</strong>
-		   	<div>owner: {{item.owner}}</div>
-		   	<div>Max bidder{{item.maxbider}}</div>
-		  	<div>${{item.currentbid}}</div>
-		  	</div>
+			<div>Category: {{card.category}}</div>
+		   	<strong>title: {{card.title}}</strong>
+		   	<div>owner: {{card.meaning}}</div>
+		   	</div>
 		   	</a>
 		</div>
         {% endfor %}
