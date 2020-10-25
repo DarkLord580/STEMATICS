@@ -29,55 +29,24 @@
   			</select>
 	
 			{% if cards  %}
-	 {% for card in cards %}
-		<div class="flip-card">
-  			<div class="flip-card-inner">
-    			<div class="flip-card-front">
-      				<h1>{{card.title}}</h1> 
-      				</div>
-    			<div class="flip-card-back">
-      				<p>Definition: {{card.meaning}}</p> 
-      			</div>
-  			</div>
-		</div>
-		{% endfor %}
+			 {% for card in cards %}
+				<div class="flip-card">
+		  			<div class="flip-card-inner">
+		    			<div class="flip-card-front">
+		      				<h1>{{card.title}}</h1> 
+		      				</div>
+		    			<div class="flip-card-back">
+		      				<p>Definition: {{card.meaning}}</p> 
+		      			</div>
+		  			</div>
+				</div>
+				{% endfor %}
 	           {% else %}
 	           <div> No card found </div>
 	           {% endif %}
     		
     	 {% endif %}
     </div>
-    	
-    	
-    	
-    	
-<script>
-var slideIndex = 1;
-showSlides(slideIndex);
-
-function plusSlides(n) {
-  showSlides(slideIndex += n);
-}
-
-function currentSlide(n) {
-  showSlides(slideIndex = n);
-}
-
-function showSlides(n) {
-  var i;
-  var slides = document.getElementsByClassName("mySlides");
-  var dots = document.getElementsByClassName("dot");
-  if (n > slides.length) {slideIndex = 1}    
-  if (n < 1) {slideIndex = slides.length}
-  for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";  
-  }
-  for (i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" active", "");
-  }
-  slides[slideIndex-1].style.display = "block";  
-  dots[slideIndex-1].className += " active";
-}
-</script>
+   
     	
 {% endblock %}
