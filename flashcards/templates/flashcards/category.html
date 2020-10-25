@@ -7,14 +7,17 @@
     		<h2 class="card-title h2">Categories</h2>
     		 <ul class="list-group">
                 {% for category in categories %}
+					<div style="background-color:white; margin:10px;border-color:black;">
+                    	<a href="{% url 'category' category.id %}">
+                    	<li class="list-group-card"><i class="fas fa-tshirt mr-5"></i> {{category.category}}</li>
+						{% if category.imageurl %}
+    					<img src="{{category.imageurl}}" class="rounded" style = " text-align:center;max-height: 250px; max-width: 250px;">
+    					{% else %}
+    					<img src="https://p7cdn4static.sharpschool.com/UserFiles/Servers/Server_1271683/Image/Meet%20the%20Candidates/No-Photo-Provided.png" class="rounded" style = " text-align:center;max-height: 250px; max-width: 250px;"">
+    					{% 	endif %}
+    					</a>
+    				</div>
 					
-                    <a href="{% url 'category' category.id %}">
-					{% if category.imageurl %}
-    				<img src="{{category.imageurl}}" class="rounded" style = " text-align:center;max-height: 250px; max-width: 250px;display: block; margin-left: auto; margin-right: auto; width: 50%;z">
-    				{% else %}
-    				<img src="https://p7cdn4static.sharpschool.com/UserFiles/Servers/Server_1271683/Image/Meet%20the%20Candidates/No-Photo-Provided.png" class="rounded" style = " text-align:center;max-height: 250px; max-width: 250px;"">
-    				{% endif %}
-					<li class="list-group-card"><i class="fas fa-tshirt mr-5"></i> {{category.category}}</li></a>
                 {% endfor %}
              </ul>
         {% else %}
@@ -28,11 +31,9 @@
   			
   			{% if cards  %}
 				{% for card in cards %}
-	            	<div class="float-left">
+	            	<div class="float-left" style="margin:10px; border-color:black;">
 	               	<strong>{{card.title}}</strong>
 	               	<div>{{card.meaning}}</div>
-	              	</div>
-	               	</a>
 	           	</div>
 	            {% endfor %}
 	           {% else %}
