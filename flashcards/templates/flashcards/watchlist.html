@@ -3,7 +3,7 @@
 {% block body %}
 
     <div>
-    	<h2 class="card-title h2">Watchlist</h2>
+    	<h2 class="card-title h2">Watched Cards</h2>
     	{% for item in items %}
 		<div>
 			<a href="{% url 'viewitem' item.id %}" class="btn" style="width:100%; border-color:black; Margin:10px;">
