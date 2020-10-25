@@ -34,9 +34,9 @@ class Comment(models.Model):
     createdate = models.DateTimeField(auto_now_add=True)
    
     
-class Watchitem(models.Model):
+class Watchcard(models.Model):
     user = models.CharField(max_length=128)
-    itemid = models.IntegerField()
+    cardid = models.IntegerField()
     createdate = models.DateTimeField(auto_now_add=True)
     
 
