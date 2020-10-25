@@ -108,30 +108,12 @@ def viewcard(request, cardid):
     #print ("         request viewcard")
     #print("####################################")
     
-    card = card.objects.get(id=cardid)
+    card = Card.objects.get(id=cardid)
     
-    newbid = card.currentbid
-    bidmessage=""
     if request.method == "POST":
         
-        postnewbid= request.POST.get("currentbid")
         postnewcomment = request.POST.get("comment")
         
-        if postnewbid is not None and postnewbid.isnumeric():
-            newbid = int(postnewbid)
-            if card.currentbid < newbid:
-                card.currentbid = newbid
-                card.maxbider = request.user.username
-                card.save()
-            
-            bid = Bid.objects.filter(cardid=cardid,biduser=request.user.username)
-            if bid:
-                bid.delete()
-            bid = Bid()
-            bid.biduser = request.user.username
-            bid.cardid = cardid
-            bid.bid = newbid
-            bid.save()
         if postnewcomment is not None:
             comment = Comment()
             comment.comment = postnewcomment
@@ -152,7 +134,6 @@ def viewcard(request, cardid):
     if watchcardids:
         watched = len(watchcardids)
     
-    currentbid = newbid + 1
     return render(request, "flashcards/viewcard.html", {"card": card
             ,"watching": watching, "comments": comments, "is_maker": is_maker, "watched":watched})
 
@@ -167,7 +148,7 @@ def newcard(request):
     is_maker= 'Maker' in request.user.groups.values_list('name', flat=True)
     
     if request.method == "POST":
-        form = NewcardForm(request.POST)
+        form = NewCardForm(request.POST)
         print("####################################")
         print (form)
         print("####################################")
@@ -203,8 +184,12 @@ def category(request , categoryid):
     #print ("         request category")
     #print("####################################")
     categories=Category.objects.all()
+    print("####################################")
+    print (categories)
+    print("####################################")
     is_maker= 'Maker' in request.user.groups.values_list('name', flat=True)
     cards = Card.objects.all()
+    
     watched = 0
     watchcardids = Watchcard.objects.filter(user=request.user.username).order_by("-createdate").values_list('cardid',flat=True)
     if watchcardids:
