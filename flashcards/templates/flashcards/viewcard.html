@@ -21,26 +21,15 @@
 {% endblock %}
 
 {% block body %}
-    {% if item %}
-    	<h2>LISTING:{{item.title}}</h2>
-    	{% if user.is_authenticated and user.username == item.owner and not item.closed  %}
-    	<a href="{% url 'closedlist' item.id %}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Close list</a>
-    	{% endif %}
+    {% if card %}
+    	<h2>Card:{{card.category}}</h2>
     	<div class="">
-    		<div> {# for image  #}
-    		</div>
     		<div>
-    			<div></div>
-    			{% if item.imageurl %}
-    			<div><img src="{{item.imageurl}}" class="rounded" style = " text-align:center;max-height: 250px; max-width: 250px;display: block; margin-left: auto; margin-right: auto; width: 50%;z">
-    			{% else %}
-    			<div><img src="https://p7cdn4static.sharpschool.com/UserFiles/Servers/Server_1271683/Image/Meet%20the%20Candidates/No-Photo-Provided.png" class="rounded" style = " text-align:center;max-height: 250px; max-width: 250px;"">
-    			{% endif %}
-    			<div>{{item.description}}</div>
-    			<h1>${{item.currentbid}}</h1>
+    			<div>{{card.title}}</div>
+    			<h1>${{card.meaning}}</h1>
     		</div>
     		
-    		{% if user.is_authenticated and not item.closed %}
+    		{% if user.is_authenticated %}
     		<a href="{% url 'addwatchlist' item.id %}">
     			{% if watching %}
 					<img src="{% static 'flashcards/img/favorite.png' %}" class="unfavorite" />
@@ -52,7 +41,7 @@
 			{% if bidmessage %} 
            		<div class="col-sm-2">{{bidmessage}}</div>
            		{% endif %}
-			{% if user.is_authenticated and user.username != item.owner and not item.closed %}
+			{% if user.is_authenticated and user.username != item.owner %}
 			
            	<form action="{% url 'placebid' item.id %}" method="POST">
            		{% csrf_token %}
@@ -78,22 +67,15 @@
           		</div>
           	{% endfor %}
           	{% if user.is_authenticated %}
-	          	{% if item.closed %}
-	          		<div class="row">
-		            		<div class="col-sm-2">comment : </div>
-		           			<div class="col-sm-4">list is closed</div>
-		          	</div>
-	          	{% else %}
-	          	
-		        	<form action="{% url 'writecomment' item.id %}" method="POST">
+	          	<form action="{% url 'writecomment' item.id %}" method="POST">
 		           		{% csrf_token %}
 		           		<div class="row">
 		            		<div class="col-sm-2">comment: </div>
 		           			<div class="col-sm-4"><textarea class="form-control" rows="10" name="comment"></textarea></div>
 		          		</div>
 		            	<p align="justify"><input class="btn btn-primary" type="submit" value="comment"></p>
-		            </form>
-		         {% endif %}
+		        </form>
+		        
         	{% endif %}
     	</div>
 	{% else %}
