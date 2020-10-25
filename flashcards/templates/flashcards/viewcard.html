@@ -30,7 +30,7 @@
     		</div>
     		
     		{% if user.is_authenticated %}
-    		<a href="{% url 'addwatchlist' item.id %}">
+    		<a href="{% url 'addwatchcard' card.id %}">
     			{% if watching %}
 					<img src="{% static 'flashcards/img/favorite.png' %}" class="unfavorite" />
 				{% else %}	
@@ -38,20 +38,7 @@
 				{% endif %}
 			</a>
 			{% endif %}
-			{% if bidmessage %} 
-           		<div class="col-sm-2">{{bidmessage}}</div>
-           		{% endif %}
-			{% if user.is_authenticated and user.username != item.owner %}
-			
-           	<form action="{% url 'placebid' item.id %}" method="POST">
-           		{% csrf_token %}
-           		<div class="row">
-           			<div class="col-sm-4"><input type="number" class="form-control" min="{{currentbid}}"  value="{{currentbid}}" name="currentbid" required></div>
-          		</div>
-            	<p align="justify"><input class="btn btn-primary" type="submit" value="Place bid"></p>
-            </form>
-        	{% endif %}
-      <h2>Details</h2>
+	  <h2>Details</h2>
       <li>Listed by:{{item.owner}}</li>
       <li>Category:{{item.category}}</li>
         	{% for comment in comments %}
@@ -67,7 +54,7 @@
           		</div>
           	{% endfor %}
           	{% if user.is_authenticated %}
-	          	<form action="{% url 'writecomment' item.id %}" method="POST">
+	          	<form action="{% url 'writecomment' card.id %}" method="POST">
 		           		{% csrf_token %}
 		           		<div class="row">
 		            		<div class="col-sm-2">comment: </div>

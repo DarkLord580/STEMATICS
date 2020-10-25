@@ -225,7 +225,7 @@ def watchlist(request):
 
 
 @login_required(login_url='/login')
-def addwatchlist(request, cardid):
+def addwatchcard(request, cardid):
 
     watchcards = Watchcard.objects.filter(
         cardid=cardid, user=request.user.username)
