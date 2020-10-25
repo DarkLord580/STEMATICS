@@ -14,7 +14,8 @@ class Category(models.Model):
     imageurl = models.CharField(max_length=1024
         ,default="https://lh3.googleusercontent.com/ogw/ADGmqu83910wkHMPdQYwo6o7h8MIAD-wnEBgWa0b2syc=s192-c-mo")
     
-    
+    def __str__(self):
+        return ' Category:{}  \n url:{}\n'.format(self.category, self.imageurl)
 
 class Card(models.Model):
     category = models.CharField(max_length=128)
