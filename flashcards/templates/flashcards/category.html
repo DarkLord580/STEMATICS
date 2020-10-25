@@ -1,16 +1,7 @@
 {% extends "flashcards/layout.html" %}
 
 {% block body %}
-
-
-
-
-
-
-
-
-
-    <div>
+	<div>
     	{% if totalcategory  %}
     		<h2 class="card-title h2">Sets</h2>
     		 <ul class="list-group">
@@ -31,7 +22,7 @@
         {% else %}
     		<h2 class="card-title h2">Set: {{category}}</h2>
     		<select class="browser-default custom-select" onchange="location = this.value;">
-    			<option selected>Select Other Category</option>
+    			<option selected>Select Other Set</option>
     			{% for category in categories %}
     				<option  value="{% url 'category' category.id %}">{{category.category}}</option>
   				{% endfor %}

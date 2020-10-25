@@ -195,7 +195,7 @@ def category(request , categoryid):
     
     if categoryid == 0:
         totalcategory = True
-        return render(request, "flashcards/category.html", {"totalcategory": totalcategory, "categories": categories, "watched":watched})    
+        return render(request, "flashcards/category.html", {"totalcategory": totalcategory, "categories": categories,  "is_maker": is_maker,"watched":watched})    
     else:
         totalcategory = False
         cardcategories = Category.objects.filter(id=categoryid).values_list('category',flat=True)
