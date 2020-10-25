@@ -27,6 +27,11 @@ class NewCardForm(forms.ModelForm):
        model = Card
        fields = ["category","title", "meaning"]
        
+class NewCategoryForm(forms.ModelForm):
+    class Meta:
+       model = Category
+       fields = ["category","imageurl"]
+       
 class Comment(models.Model):
     itemid = models.IntegerField()
     commentuser = models.CharField(max_length=128)

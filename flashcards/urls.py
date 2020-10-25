@@ -9,6 +9,7 @@ urlpatterns = [
     path("register", views.register, name="register"),
     path("viewcard/<int:cardid>", views.viewcard, name="viewcard"),
     path("createcard", views.newcard, name="newcard"),
+    path("createcategory", views.newcategory, name="newcategory"),
     path("category/<int:categoryid>", views.category, name="category"),
     path("watchlist", views.watchlist, name="watchlist"),
     path("writecomment/<int:cardid>", views.viewcard, name="writecomment"),

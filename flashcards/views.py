@@ -13,17 +13,17 @@ from django.utils.timezone import now
 
 
 def index(request):
-    #print("####################################")
-    #print ("         request index ")
-    #print("####################################")
-    is_seller= 'Seller' in request.user.groups.values_list('name', flat=True)
-    cards = card.objects.filter(closed=False)
+    print("####################################")
+    print ("         request index ")
+    print("####################################")
+    is_maker= 'Maker' in request.user.groups.values_list('name', flat=True)
+    cards = Card.objects.all()
     watched = 0
     watchcardids = Watchcard.objects.filter(user=request.user.username).order_by("-createdate").values_list('cardid',flat=True)
     if watchcardids:
         watched = len(watchcardids)
     
-    return render(request, "flashcards/index.html", {"cards": cards, "is_seller": is_seller, "watched":watched})
+    return render(request, "flashcards/index.html", {"cards": cards, "is_maker": is_maker, "watched":watched})
 
 
 def login_view(request):
@@ -94,7 +94,6 @@ def viewcards(request):
     #print ("         request viewcards")
     #print("####################################")
     cards = card.objects.all()
-    cards = card.objects.filter(closed=False)
     watched = 0
     watchcardids = Watchcard.objects.filter(user=request.user.username).order_by("-createdate").values_list('cardid',flat=True)
     if watchcardids:
@@ -141,28 +140,13 @@ def viewcard(request, cardid):
             comment.save()
             
             
-    bids = Bid.objects.filter(cardid= cardid)
-    if bids is not None and len(bids) > 1:
-        bidcount = len(bids)
-        bidmessage = "<strong>{bidcount} </strong> bid(s) so far.".format(bidcount=bidcount)
-    if card.maxbider == request.user.username:
-        if card.closed:
-            bidmessage = "{bidmessage} You're the winner of bids.".format(bidmessage=bidmessage)
-        else:
-            bidmessage = "{bidmessage} Your bid is the current bid.".format(bidmessage=bidmessage)
-        
-    else:
-        if card.closed:
-            bidmessage = "{bidmessage} The list is closed.".format(bidmessage=bidmessage)
-    
-    
     comments = Comment.objects.filter(cardid=cardid).order_by("-createdate")
     
     watchcard = Watchcard.objects.filter(user=request.user.username, cardid= cardid)
     watching = False
     if watchcard:
         watching = True
-    is_seller= 'Seller' in request.user.groups.values_list('name', flat=True)
+    is_maker= 'Maker' in request.user.groups.values_list('name', flat=True)
     watched = 0
     watchcardids = Watchcard.objects.filter(user=request.user.username).order_by("-createdate").values_list('cardid',flat=True)
     if watchcardids:
@@ -170,8 +154,7 @@ def viewcard(request, cardid):
     
     currentbid = newbid + 1
     return render(request, "flashcards/viewcard.html", {"card": card
-            ,"watching": watching, "currentbid":currentbid
-            ,"bidmessage":bidmessage, "comments": comments, "is_seller": is_seller, "watched":watched})
+            ,"watching": watching, "comments": comments, "is_maker": is_maker, "watched":watched})
 
 
 
@@ -181,7 +164,7 @@ def newcard(request):
     #print ("         request newcard")
     #print("####################################")
     
-    is_seller= 'Seller' in request.user.groups.values_list('name', flat=True)
+    is_maker= 'Maker' in request.user.groups.values_list('name', flat=True)
     
     if request.method == "POST":
         form = NewcardForm(request.POST)
@@ -194,16 +177,34 @@ def newcard(request):
         return HttpResponseRedirect(reverse("index"))
     else: 
         categories=Category.objects.all()
-        return render(request,"flashcards/newcard.html", {"categories": categories, "is_seller": is_seller}) 
+        return render(request,"flashcards/newcard.html", {"categories": categories, "is_maker": is_maker}) 
     
+@login_required(login_url='/login')
+def newcategory(request):
+    #print("####################################")
+    #print ("         request newcategory")
+    #print("####################################")
+    
+    is_maker= 'Maker' in request.user.groups.values_list('name', flat=True)
+    
+    if request.method == "POST":
+        form = NewCategoryForm(request.POST)
+        print("####################################")
+        print (form)
+        print("####################################")
+        if form.is_valid():
+            form.save()
+        return HttpResponseRedirect(reverse("index"))
+    else: 
+        return render(request,"flashcards/newcategory.html", {"is_maker": is_maker}) 
 
 def category(request , categoryid):
     #print("####################################")
     #print ("         request category")
     #print("####################################")
     categories=Category.objects.all()
-    is_seller= 'Seller' in request.user.groups.values_list('name', flat=True)
-    cards = card.objects.filter(closed=False)
+    is_maker= 'Maker' in request.user.groups.values_list('name', flat=True)
+    cards = Card.objects.all()
     watched = 0
     watchcardids = Watchcard.objects.filter(user=request.user.username).order_by("-createdate").values_list('cardid',flat=True)
     if watchcardids:
@@ -216,9 +217,9 @@ def category(request , categoryid):
         totalcategory = False
         cardcategories = Category.objects.filter(id=categoryid).values_list('category',flat=True)
         
-        cards = card.objects.filter(category__in=cardcategories, closed= False)
+        cards = Card.objects.filter(category__in=cardcategories)
         return render(request, "flashcards/category.html", {"totalcategory": totalcategory, 
-                "categories": categories, "category": cardcategories[0], "cards": cards, "is_seller": is_seller, "watched":watched})
+                "categories": categories, "category": cardcategories[0], "cards": cards, "is_maker": is_maker, "watched":watched})
        
 @login_required(login_url='/login')
 def watchlist(request):
@@ -231,11 +232,11 @@ def watchlist(request):
     watched = 0
     if watchcardids:
         watched = len(watchcardids)
-    cards = card.objects.filter(id__in=watchcardids)
+    cards = Card.objects.filter(id__in=watchcardids)
     
-    is_seller= 'Seller' in request.user.groups.values_list('name', flat=True)
+    is_maker= 'Maker' in request.user.groups.values_list('name', flat=True)
     
-    return render(request, "flashcards/watchlist.html", {"cards": cards , "is_seller": is_seller, "watched":watched})        
+    return render(request, "flashcards/watchlist.html", {"cards": cards , "is_maker": is_maker, "watched":watched})        
 
 
 @login_required(login_url='/login')
@@ -263,34 +264,6 @@ def deletecomment(request, commentid):
         
     return HttpResponseRedirect(reverse("viewcard", kwargs={'cardid': cardid}))
 
-@login_required(login_url='/login')    
-def closedlists(request):
-    #print("####################################")
-    #print ("         request closedlists")
-    #print("####################################")
-    
-    
-    cards = card.objects.filter(closed=True)
-    is_seller= 'Seller' in request.user.groups.values_list('name', flat=True)
-    
-    return render(request, "flashcards/closedlist.html", {"cards": cards, "is_seller": is_seller})        
-        
-        
 
-@login_required(login_url='/login')    
-def closedlist(request , cardid):
-    #print("####################################")
-    #print ("         request closedlist ")
-    #print("####################################")
-    
-    card = card.objects.get(id=cardid)
-    if card is not None and card.closed == False:
-        card.closed= True
-        card.save()
-
-     
-    return HttpResponseRedirect(reverse("viewcard", kwargs={'cardid': cardid}))
-
-    
     
 
