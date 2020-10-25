@@ -27,30 +27,26 @@
     				<option  value="{% url 'category' category.id %}">{{category.category}}</option>
   				{% endfor %}
   			</select>
-  			
-  			{% if cards  %}
- <div class="slideshow-container">
-				{% for card in cards %}
-<div style="width:100px; height:200px;" class="mySlides fade">
- <img src="img_mountains_wide.jpg" style="width:200px; height:100px;">
-  <div style="display:block; width:200px; height:100px"class="text">{{card.title}}</div>
-</div>
-	            {% endfor %}
-<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-<a class="next" onclick="plusSlides(1)">&#10095;</a>
-	            
-</div>
+	
+			{% if cards  %}
+	 {% for card in cards %}
+		<div class="flip-card">
+  			<div class="flip-card-inner">
+    			<div class="flip-card-front">
+      				<h1>{{card.title}}</h1> 
+      				</div>
+    			<div class="flip-card-back">
+      				<p>Definition: {{card.meaning}}</p> 
+      			</div>
+  			</div>
+		</div>
+		{% endfor %}
 	           {% else %}
 	           <div> No card found </div>
 	           {% endif %}
     		
     	 {% endif %}
     </div>
-    	
-    	
-    	
-    	
-    	
     	
     	
     	
