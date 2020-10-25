@@ -33,7 +33,7 @@ class NewCategoryForm(forms.ModelForm):
        fields = ["category","imageurl"]
        
 class Comment(models.Model):
-    itemid = models.IntegerField()
+    cardid = models.IntegerField()
     commentuser = models.CharField(max_length=128)
     comment = models.CharField(max_length=1024)
     createdate = models.DateTimeField(auto_now_add=True)
