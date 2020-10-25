@@ -4,7 +4,7 @@
 
     <div>
     	{% if totalcategory  %}
-    		<h2 class="card-title h2">Categories</h2>
+    		<h2 class="card-title h2">Sets</h2>
     		 <ul class="list-group">
                 {% for category in categories %}
 					<div style="background-color:white; margin:10px;border-color:black;">
@@ -21,7 +21,7 @@
                 {% endfor %}
              </ul>
         {% else %}
-    		<h2 class="card-title h2">Category: {{category}}</h2>
+    		<h2 class="card-title h2">Set: {{category}}</h2>
     		<select class="browser-default custom-select" onchange="location = this.value;">
     			<option selected>Select Other Category</option>
     			{% for category in categories %}
