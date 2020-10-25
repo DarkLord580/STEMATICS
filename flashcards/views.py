@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 
-from auctions.models import *
+from flashcards.models import *
 from django.contrib.admin.templatetags.admin_list import items_for_result
 from django.utils.timezone import now
 
@@ -23,7 +23,7 @@ def index(request):
     if watchitemids:
         watched = len(watchitemids)
     
-    return render(request, "auctions/index.html", {"items": items, "is_seller": is_seller, "watched":watched})
+    return render(request, "flashcards/index.html", {"items": items, "is_seller": is_seller, "watched":watched})
 
 
 def login_view(request):
@@ -42,11 +42,11 @@ def login_view(request):
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
         else:
-            return render(request, "auctions/login.html", {
+            return render(request, "flashcards/login.html", {
                 "message": "Invalid username and/or password."
             })
     else:
-        return render(request, "auctions/login.html")
+        return render(request, "flashcards/login.html")
 
 
 def logout_view(request):
@@ -69,7 +69,7 @@ def register(request):
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
         if password != confirmation:
-            return render(request, "auctions/register.html", {
+            return render(request, "flashcards/register.html", {
                 "message": "Passwords must match."
             })
 
@@ -78,13 +78,13 @@ def register(request):
             user = User.objects.create_user(username, email, password)
             user.save()
         except IntegrityError:
-            return render(request, "auctions/register.html", {
+            return render(request, "flashcards/register.html", {
                 "message": "Username already taken."
             })
             login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
-        return render(request, "auctions/register.html")
+        return render(request, "flashcards/register.html")
     
     
 
@@ -101,7 +101,7 @@ def viewitems(request):
         watched = len(watchitemids)
     
     
-    return render(request, "auctions/index.html", {"items": items, "noitem": noitem })
+    return render(request, "flashcards/index.html", {"items": items, "noitem": noitem })
 
 
 def viewitem(request, itemid):
@@ -169,7 +169,7 @@ def viewitem(request, itemid):
         watched = len(watchitemids)
     
     currentbid = newbid + 1
-    return render(request, "auctions/viewitem.html", {"item": item
+    return render(request, "flashcards/viewitem.html", {"item": item
             ,"watching": watching, "currentbid":currentbid
             ,"bidmessage":bidmessage, "comments": comments, "is_seller": is_seller, "watched":watched})
 
@@ -194,7 +194,7 @@ def newitem(request):
         return HttpResponseRedirect(reverse("index"))
     else: 
         categories=Category.objects.all()
-        return render(request,"auctions/newitem.html", {"categories": categories, "is_seller": is_seller}) 
+        return render(request,"flashcards/newitem.html", {"categories": categories, "is_seller": is_seller}) 
     
 
 def category(request , categoryid):
@@ -211,13 +211,13 @@ def category(request , categoryid):
     
     if categoryid == 0:
         totalcategory = True
-        return render(request, "auctions/category.html", {"totalcategory": totalcategory, "categories": categories, "watched":watched})    
+        return render(request, "flashcards/category.html", {"totalcategory": totalcategory, "categories": categories, "watched":watched})    
     else:
         totalcategory = False
         itemcategories = Category.objects.filter(id=categoryid).values_list('category',flat=True)
         
         items = Item.objects.filter(category__in=itemcategories, closed= False)
-        return render(request, "auctions/category.html", {"totalcategory": totalcategory, 
+        return render(request, "flashcards/category.html", {"totalcategory": totalcategory, 
                 "categories": categories, "category": itemcategories[0], "items": items, "is_seller": is_seller, "watched":watched})
        
 @login_required(login_url='/login')
@@ -235,7 +235,7 @@ def watchlist(request):
     
     is_seller= 'Seller' in request.user.groups.values_list('name', flat=True)
     
-    return render(request, "auctions/watchlist.html", {"items": items , "is_seller": is_seller, "watched":watched})        
+    return render(request, "flashcards/watchlist.html", {"items": items , "is_seller": is_seller, "watched":watched})        
 
 
 @login_required(login_url='/login')
@@ -273,7 +273,7 @@ def closedlists(request):
     items = Item.objects.filter(closed=True)
     is_seller= 'Seller' in request.user.groups.values_list('name', flat=True)
     
-    return render(request, "auctions/closedlist.html", {"items": items, "is_seller": is_seller})        
+    return render(request, "flashcards/closedlist.html", {"items": items, "is_seller": is_seller})        
         
         
 

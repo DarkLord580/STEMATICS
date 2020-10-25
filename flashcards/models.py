@@ -11,36 +11,22 @@ class User(AbstractUser):
 
 class Category(models.Model):
     category = models.CharField(max_length=128, default="")
-    
-    
-
-class Item(models.Model):
-    owner = models.CharField(max_length=128)
-    category = models.CharField(max_length=128)
-    title = models.CharField(max_length=128)
     imageurl = models.CharField(max_length=1024
         ,default="https://lh3.googleusercontent.com/ogw/ADGmqu83910wkHMPdQYwo6o7h8MIAD-wnEBgWa0b2syc=s192-c-mo")
-    description = models.TextField(default="")
-    currentbid = models.IntegerField(default=0)
     
-    maxbider = models.CharField(max_length=128, default=None,blank=True,null=True)
-    createdate = models.DateTimeField(auto_now_add=True)
-    closed = models.BooleanField(default=False)
     
-class NewItemForm(forms.ModelForm):
-    class Meta:
-       model = Item
-       fields = ["owner","category", "title", "imageurl", "description", "currentbid"]
-       
-       
 
+class Card(models.Model):
+    category = models.CharField(max_length=128)
+    title = models.CharField(max_length=128)
+    meaning = models.TextField(default="")
+    createdate = models.DateTimeField(auto_now_add=True)
     
-class Bid(models.Model):
-    itemid = models.IntegerField()
-    biduser= models.CharField(max_length=128)
-    bid = models.IntegerField()
-    biddate = models.DateTimeField(auto_now_add=True)
-    
+class NewCardForm(forms.ModelForm):
+    class Meta:
+       model = Card
+       fields = ["category","title", "meaning"]
+       
 class Comment(models.Model):
     itemid = models.IntegerField()
     commentuser = models.CharField(max_length=128)

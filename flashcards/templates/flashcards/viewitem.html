@@ -1,4 +1,4 @@
-{% extends "auctions/layout.html" %}
+{% extends "flashcards/layout.html" %}
 
 {% load static %}
 {% block css %}
@@ -43,9 +43,9 @@
     		{% if user.is_authenticated and not item.closed %}
     		<a href="{% url 'addwatchlist' item.id %}">
     			{% if watching %}
-					<img src="{% static 'auctions/img/favorite.png' %}" class="unfavorite" />
+					<img src="{% static 'flashcards/img/favorite.png' %}" class="unfavorite" />
 				{% else %}	
-					<img src="{% static 'auctions/img/favorite.png' %}" class="favorite" />
+					<img src="{% static 'flashcards/img/favorite.png' %}" class="favorite" />
 				{% endif %}
 			</a>
 			{% endif %}
