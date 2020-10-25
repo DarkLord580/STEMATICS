@@ -1,0 +1,58 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+<div class="container">
+    <h2>Create listing</h2>
+
+</div>
+<div class="container">
+   <form action="createlisting" method="POST">
+   		<input type="hidden" id="owner" name="owner" value="{{user.username}}">
+        {% csrf_token %}
+        <div class="row">
+        	<div class="col-sm-2">Category : </div>
+        	<div class="col-sm-4">
+        	
+            <select class="browser-default custom-select" name="category">
+    			<option selected>Select another category</option>
+    			{% for category in categories %}
+    				<option  value="{{category.category}}">{{category.category}}</option>
+  				{% endfor %}
+  			</select>
+  			
+            </div>
+          </div>
+          
+        <div class="row">
+          <div class="col-sm-2">Title    :</div>
+          <div class="col-sm-6">
+          <input type="text" class="form-control" name="title" required>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">Image Url (Optional):</div>
+           	<div class="col-sm-10"> <input type="text" class="form-control" name="imageurl" value="https://p7cdn4static.sharpschool.com/UserFiles/Servers/Server_1271683/Image/Meet%20the%20Candidates/No-Photo-Provided.png"></div>
+          </div>
+        
+        <div class="row">
+          <div class="col-sm-2">Description (Optional): </div>
+          <div class="col-sm-10"><textarea class="form-control" rows="10" name="description"></textarea></div>
+        </div>
+          
+        <div class="row">
+            <div class="col-sm-2">Start Bid Price($) : </div>
+            <div class="col-sm-4"><input type="number" class="form-control" min="1" name="currentbid" required></div>
+          </div>
+            <div class="row">
+          <div class="col-sm-10"> </div>
+          <div class="col-sm-2">
+          	<button class="btn btn-outline-info" type="submit">Save</button>
+          	</div>
+          </div>
+        
+          
+
+        
+
+      </form>  
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Closed Listings</h2>
+    
+    {% if items %}
+    	<div class="">
+    		{% for item in items%}
+    		<a href="{% url 'viewitem' item.id %}" class="btn" style="height:300px; width: 100%; border-color:black; margin:10px;">
+    		
+    		<div> {# for image  #}
+    		<img src="{{item.imageurl}}" class="rounded float-left" style = "max-height: 250px; max-width: 250px; width: expression(document.body.clientWidth > 150? “150px”: “auto”); height: expression(document.body.clientHeight > 100? “100px”: “auto”);">
+    		</div>
+    		<div>
+    			<div>{{item.title}}</div>
+    			<div>{{item.maxbider}}</div> 
+    			<div>{{item.description}}</div> 
+    			<div>{{item.currentbid}}</div>
+    		
+    		</div>
+    		</a>
+    		{% endfor %}
+    	</div>
+    {% else %}
+    	<br>
+		<h3>No List</h3>
+    {% endif %}
+   
+{% endblock %}
+
+
+

@@ -1,0 +1,46 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <div>
+    	{% if totalcategory  %}
+    		<h2 class="card-title h2">Categories</h2>
+    		 <ul class="list-group">
+                {% for category in categories %}
+                    <a href="{% url 'category' category.id %}"><li class="list-group-item"><i class="fas fa-tshirt mr-5"></i> {{category.category}}</li></a>
+                {% endfor %}
+             </ul>
+        {% else %}
+    		<h2 class="card-title h2">Category: {{category}}</h2>
+    		<select class="browser-default custom-select" onchange="location = this.value;">
+    			<option selected>Select Other Category</option>
+    			{% for category in categories %}
+    				<option  value="{% url 'category' category.id %}">{{category.category}}</option>
+  				{% endfor %}
+  			</select>
+  			
+  			{% if items  %}
+				{% for item in items %}
+	            <div>
+	            	<a href="{% url 'viewitem' item.id %}" class="btn" style = "height: 300px; width: 100%; border-color: black; margin: 10px">
+	            	{%if item.imageurl %}
+    			<img src="{{item.imageurl}}" class="rounded float-left" style = "max-height: 230px; max-width: 230px; width: expression(document.body.clientWidth > 150? “150px”: “auto”); height: expression(document.body.clientHeight > 100? “100px”: “auto”);">
+    			{% else %}
+    			<img src="https://p7cdn4static.sharpschool.com/UserFiles/Servers/Server_1271683/Image/Meet%20the%20Candidates/No-Photo-Provided.png" class="rounded float-left" style = "max-height: 230px; max-width: 230px; width: expression(document.body.clientWidth > 150? “150px”: “auto”); height: expression(document.body.clientHeight > 100? “100px”: “auto”);">
+    			{% endif %}
+	            	<div class="float-left">
+	               	<strong>{{item.title}}</strong>
+	               	<div>{{item.description}}</div>
+	              	<div> ${{item.currentbid}}</div>
+	              	</div>
+	               	</a>
+	           	</div>
+	            {% endfor %}
+	           {% else %}
+	           <div> No item found </div>
+	           {% endif %}
+    		
+    	 {% endif %}
+    </div>
+    	
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends "auctions/layout.html" %}
+
+{% load static %}
+{% block css %}
+
+.favorite {
+	left: 0px;
+	top: 250px;
+    position: absolute;
+    clip: rect(0px,44px,44px,0px);
+}
+
+.unfavorite {
+	left: -44px;
+	top: 250px;
+    position: absolute;
+    clip: rect(0px,88px,44px,44px);
+}
+
+
+{% endblock %}
+
+{% block body %}
+    {% if item %}
+    	<h2>LISTING:{{item.title}}</h2>
+    	{% if user.is_authenticated and user.username == item.owner and not item.closed  %}
+    	<a href="{% url 'closedlist' item.id %}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Close list</a>
+    	{% endif %}
+    	<div class="">
+    		<div> {# for image  #}
+    		</div>
+    		<div>
+    			<div></div>
+    			{% if item.imageurl %}
+    			<div><img src="{{item.imageurl}}" class="rounded" style = " text-align:center;max-height: 250px; max-width: 250px;display: block; margin-left: auto; margin-right: auto; width: 50%;z">
+    			{% else %}
+    			<div><img src="https://p7cdn4static.sharpschool.com/UserFiles/Servers/Server_1271683/Image/Meet%20the%20Candidates/No-Photo-Provided.png" class="rounded" style = " text-align:center;max-height: 250px; max-width: 250px;"">
+    			{% endif %}
+    			<div>{{item.description}}</div>
+    			<h1>${{item.currentbid}}</h1>
+    		</div>
+    		
+    		{% if user.is_authenticated and not item.closed %}
+    		<a href="{% url 'addwatchlist' item.id %}">
+    			{% if watching %}
+					<img src="{% static 'auctions/img/favorite.png' %}" class="unfavorite" />
+				{% else %}	
+					<img src="{% static 'auctions/img/favorite.png' %}" class="favorite" />
+				{% endif %}
+			</a>
+			{% endif %}
+			{% if bidmessage %} 
+           		<div class="col-sm-2">{{bidmessage}}</div>
+           		{% endif %}
+			{% if user.is_authenticated and user.username != item.owner and not item.closed %}
+			
+           	<form action="{% url 'placebid' item.id %}" method="POST">
+           		{% csrf_token %}
+           		<div class="row">
+           			<div class="col-sm-4"><input type="number" class="form-control" min="{{currentbid}}"  value="{{currentbid}}" name="currentbid" required></div>
+          		</div>
+            	<p align="justify"><input class="btn btn-primary" type="submit" value="Place bid"></p>
+            </form>
+        	{% endif %}
+      <h2>Details</h2>
+      <li>Listed by:{{item.owner}}</li>
+      <li>Category:{{item.category}}</li>
+        	{% for comment in comments %}
+        		<div class="row">
+        			<div class="col-sm-2">{{comment.createdate|date:'Y-m-d H:i'}}</div>
+        			<div class="col-sm-1">{{comment.commentuser}}</div>
+            		<div class="col-sm-9">{{comment.comment}}
+            		{% if user.username == comment.commentuser %}
+            			<a href="{% url 'deletecomment' comment.id %}">X</a>
+            		{% endif %}
+            		
+            		</div>
+          		</div>
+          	{% endfor %}
+          	{% if user.is_authenticated %}
+	          	{% if item.closed %}
+	          		<div class="row">
+		            		<div class="col-sm-2">comment : </div>
+		           			<div class="col-sm-4">list is closed</div>
+		          	</div>
+	          	{% else %}
+	          	
+		        	<form action="{% url 'writecomment' item.id %}" method="POST">
+		           		{% csrf_token %}
+		           		<div class="row">
+		            		<div class="col-sm-2">comment: </div>
+		           			<div class="col-sm-4"><textarea class="form-control" rows="10" name="comment"></textarea></div>
+		          		</div>
+		            	<p align="justify"><input class="btn btn-primary" type="submit" value="comment"></p>
+		            </form>
+		         {% endif %}
+        	{% endif %}
+    	</div>
+	{% else %}
+    
+	<h2>LISTING:No item</h2>
+    <br>
+    <h3>No item found</h3>
+    	
+    	
+    	
+       
+    {% endif %}
+   
+{% endblock %}
+
+
+{% block javascript %}
+
+	
+{% endblock %}
