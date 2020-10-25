@@ -29,7 +29,7 @@
             
             {% if user.is_authenticated %}
             	<li class="nav-item">
-                    <a class="nav-link" href="{% url 'watchlist' %}">Watched Cards
+                    <a class="nav-link" href="{% url 'watchcard' %}">Watched Cards
                     {% if watched%}
                     ({{watched}})
                     {% endif%}

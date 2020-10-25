@@ -184,9 +184,7 @@ def category(request , categoryid):
     #print ("         request category")
     #print("####################################")
     categories=Category.objects.all()
-    print("####################################")
-    print (categories)
-    print("####################################")
+    
     is_maker= 'Maker' in request.user.groups.values_list('name', flat=True)
     cards = Card.objects.all()
     
@@ -207,9 +205,9 @@ def category(request , categoryid):
                 "categories": categories, "category": cardcategories[0], "cards": cards, "is_maker": is_maker, "watched":watched})
        
 @login_required(login_url='/login')
-def watchlist(request):
+def watchcard(request):
     #print("####################################")
-    #print ("         request watchlist")
+    #print ("         request watchcard")
     #print("####################################")
     
     watchcardids = Watchcard.objects.filter(user=request.user.username).order_by("-createdate").values_list('cardid',flat=True)
@@ -221,7 +219,7 @@ def watchlist(request):
     
     is_maker= 'Maker' in request.user.groups.values_list('name', flat=True)
     
-    return render(request, "flashcards/watchlist.html", {"cards": cards , "is_maker": is_maker, "watched":watched})        
+    return render(request, "flashcards/watchcard.html", {"cards": cards , "is_maker": is_maker, "watched":watched})        
 
 
 @login_required(login_url='/login')
