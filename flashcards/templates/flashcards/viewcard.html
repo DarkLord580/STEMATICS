@@ -24,12 +24,13 @@
     {% if card %}
     	<div class="">
     		<div>
-    			<div>{{card.title}}</div>
-    			<h1>{{card.meaning}}</h1>
+    		
+    			<h1>Term: {{card.title}}</h1>
+    			<h1>Definition: {{card.meaning}}</h1>
     			
     		</div>
     		{% if user.is_authenticated %}
-    		<a href="{% url 'addwatchcard' card.id %}" style="width:10px; ">
+    		<a href="{% url 'addwatchcard' card.id %}" style="margin:10px">
     			{% if watching %}
 					<img src="{% static 'flashcards/img/favorite.png' %}" class="unfavorite" />
 				{% else %}	
@@ -38,6 +39,8 @@
 			</a>
 			{% endif %}
 	  <h2>Details</h2>
+	  
+	  
       <li>Set:{{card.category}}</li>
         	{% for comment in comments %}
         		<div class="row">
