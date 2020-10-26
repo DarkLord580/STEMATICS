@@ -9,11 +9,11 @@
    		<input type="hidden" id="owner" name="owner" value="{{user.username}}">
         {% csrf_token %}
         <div class="row">
-        	<div class="col-sm-2">Category : </div>
+        	<div class="col-sm-2">Set : </div>
         	<div class="col-sm-4">
         	
             <select class="browser-default custom-select" name="category">
-    			<option selected>Select another category</option>
+    			<option selected>Select another set</option>
     			{% for category in categories %}
     				<option  value="{{category.category}}">{{category.category}}</option>
   				{% endfor %}
