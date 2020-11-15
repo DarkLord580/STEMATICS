@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 from flashcards.models import *
 from django.contrib.admin.templatetags.admin_list import items_for_result
 from django.utils.timezone import now
+from django.core import serializers
+import json
 
 
 
@@ -201,8 +203,11 @@ def category(request , categoryid):
         cardcategories = Category.objects.filter(id=categoryid).values_list('category',flat=True)
         
         cards = Card.objects.filter(category__in=cardcategories)
+        
         return render(request, "flashcards/category.html", {"totalcategory": totalcategory, 
-                "categories": categories, "category": cardcategories[0], "cards": cards, "is_maker": is_maker, "watched":watched})
+                "categories": categories, "category": cardcategories[0], "cards": cards[0]
+                , "is_maker": is_maker, "watched":watched
+                , "jsonc" : serializers.serialize("json",cards)})
        
 @login_required(login_url='/login')
 def watchcard(request):
