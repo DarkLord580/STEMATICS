@@ -32,7 +32,7 @@
 			 	<div class="flipCard"> 
   						<div id = "scard" class="scard" onclick="this.classList.toggle('flipped');"> 
     						<div id="title" class="side front"></div> 
-    						<div id="define" class="side back">Definition:<br/> {{cards.meaning}}</div>
+    						<div id="define" class="side back"></div>
  						 </div> 
 				</div>
 				<div>
@@ -53,6 +53,7 @@
 {% endblock %}
 
 {% block javascript %}
+
 <script>
 const cards =  {{ jsonc | safe }};
 console.log(cards);

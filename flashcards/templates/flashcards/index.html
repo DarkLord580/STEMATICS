@@ -1,18 +1,37 @@
 {% extends "flashcards/layout.html" %}
+
+{% block css %}
+.favorite {
+	width: 44px;
+	height: 44px;
+	border: 0 none;
+	cursor: pointer;
+	outline: none;
+}
+{% endblock %}
+
+
 {% block body %}
     <h2>All Flash Cards</h2>
     
     {% if cards %}
     	<div class="">
     		{% for card in cards%}
-    		<a href="{% url 'viewcard' card.id %}" class="btn" style="max-height:200px; width:95%; border-color: black; margin: 10px; color: black; " >
+			
+    		<div class="flipCard"> 
+				<a href="{% url 'viewcard' card.id %}">
+					<button type="button" class="btn btn-primary">View</button>
+				</a>
+				<div id="btn-favorite" class="favorite"></div>
+  				<div id = "scard" class="scard" onclick="this.classList.toggle('flipped');"> 
+    				<div id="title" class="side front">{{card.title}}</div> 
+    				<div id="define" class="side back">{{card.meaning}}</div>
+ 				</div> 
+			</div>
+			
+			
+			
     		
-    		<div class="float-left">
-    			<div>Terms: {{card.title}}</div>
-    			<div>Definition: {{card.meaning}}</div>
-    			
-    		</div>
-    		</a>
     		{% endfor %}
     	</div>
     {% else %}
@@ -22,4 +41,84 @@
 {% endblock %}
 
 
+{% block javascript %}
+<script>
+const cards =  {{ jsonc | safe }};
+const watchedcards =  {{ jsonv | safe }};
+
+const length = cards.length;
+var current = 0;
+
+function moveprev() {
+	current--;
+	if (current < 0) {
+		alert(" This is the first card ");
+		current = 0;
+		
+	}  
+	$('#title').html(cards[current].fields.title);
+	$('#define').html(cards[current].fields.meaning);
+	$('#scard').removeClass("flipped");
+}
+
+function movenext() {
+	current++;
+	if (current >= length) {
+		alert(" The last card \n Moving to the first card ")
+		current = 0;
+	}  
+	$('#title').html(cards[current].fields.title);
+	$('#define').html(cards[current].fields.meaning);
+	$('#scard').removeClass("flipped");
+	
+}
+
+
+$(document).ready(function () {
+		if(length > 0) {
+			$('#title').html(cards[current].fields.title);
+			$('#define').html(cards[current].fields.meaning);
+			
+		}
+		
+		$("#flip").click(function(){
+			$("#scard").toggleClass("flipped");
+		});
+		
+		$("#prev").click(function(){
+			moveprev();
+		});
+		$("#next").click(function(){
+			movenext();
+		});
+		
+	   $(document).keydown(function(e){
+			const keyvalue = e.keyCode;
+			console.log("keyvalue:" + keyvalue);
+			switch (keyvalue) {
+  				case 37: // left
+					moveprev();
+				break;
+			  	case 39: // right
+					movenext();
+			  	break;
+				case 38: // up
+				case 40: // down 
+					$("#scard").toggleClass("flipped");
+			    break;
+			  	default:
+			    console.log(`Sorry, we are out of ${expr}.`);
+			}
+			
+			
+	   });
+
+       
+});
+
+
+
+</script>
+
+{% endblock %}
 

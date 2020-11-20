@@ -15,9 +15,9 @@ import json
 
 
 def index(request):
-    print("####################################")
-    print ("         request index ")
-    print("####################################")
+    #print("####################################")
+    #print ("         request index ")
+    #print("####################################")
     is_maker= 'Maker' in request.user.groups.values_list('name', flat=True)
     cards = Card.objects.all()
     watched = 0
@@ -25,7 +25,9 @@ def index(request):
     if watchcardids:
         watched = len(watchcardids)
     
-    return render(request, "flashcards/index.html", {"cards": cards, "is_maker": is_maker, "watched":watched})
+    return render(request, "flashcards/index.html", {"cards": cards, "is_maker": is_maker, "watched":watched
+            , "jsonc" : serializers.serialize("json",cards)
+            , "jsonv" : serializers.serialize("json",watchcardids)})
 
 
 def login_view(request):
@@ -151,9 +153,9 @@ def newcard(request):
     
     if request.method == "POST":
         form = NewCardForm(request.POST)
-        print("####################################")
-        print (form)
-        print("####################################")
+        #print("####################################")
+        #print (form)
+        #print("####################################")
         if form.is_valid():
             form.owner =request.user.username
             form.save()
@@ -172,9 +174,9 @@ def newcategory(request):
     
     if request.method == "POST":
         form = NewCategoryForm(request.POST)
-        print("####################################")
-        print (form)
-        print("####################################")
+        #print("####################################")
+        #print (form)
+        #print("####################################")
         if form.is_valid():
             form.save()
         return HttpResponseRedirect(reverse("index"))
