@@ -40,6 +40,7 @@
 					<button type="button" id ="prev" class="btn btn-primary">Prev</button>
 					<button type="button" id="next" class="btn btn-primary">Next</button>
 					<button type="button" id="flip" class="btn btn-primary" >Flip</button>
+					 <input autofocus class="mx-sm-3 mb-2" type="text" name="word" id="word" placeholder="word" />
 					</center> 
 				</div>
 			{% else %}
@@ -117,8 +118,22 @@ $(document).ready(function () {
 				case 40: // down 
 					$("#scard").toggleClass("flipped");
 			    break;
+				case 13: // down 
+					var title = $.trim(cards[current].fields.title);
+					var word = $('#word').val();
+					
+					if (title.indexOf(word) != -1) {
+						$('#word').val('');
+						$('#word').focus();
+						movenext();
+						$("#scard").toggleClass("flipped");
+					} else  {
+						alert("Try again!1");
+						$('#word').focus();
+					}
+			    break;
 			  	default:
-			    console.log(`Sorry, we are out of ${expr}.`);
+			    break;
 			}
 			
 			
