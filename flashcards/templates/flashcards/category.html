@@ -37,9 +37,12 @@
 				</div>
 				<div>
 					<center> 
+					
+					<button type="button" id ="first" class="btn btn-primary">First</button>
 					<button type="button" id ="prev" class="btn btn-primary">Prev</button>
 					<button type="button" id="next" class="btn btn-primary">Next</button>
 					<button type="button" id="flip" class="btn btn-primary" >Flip</button>
+					<button type="button" id ="random" class="btn btn-primary">Random</button>
 					 <input autofocus class="mx-sm-3 mb-2" type="text" name="word" id="word" placeholder="word" />
 					</center> 
 				</div>
@@ -60,6 +63,32 @@ const cards =  {{ jsonc | safe }};
 console.log(cards);
 const length = cards.length;
 var current = 0;
+
+
+
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length; i; i -= 1) {
+        j = Math.floor(Math.random() * i);
+        x = a[i - 1];
+        a[i - 1] = a[j];
+        a[j] = x;
+    }
+}
+
+function movefirst() {
+	current = 0;
+	$('#title').html(cards[current].fields.title);
+	$('#define').html(cards[current].fields.meaning);
+	$('#scard').removeClass("flipped");
+}
+
+function random() {
+	shuffle(cards);
+	movefirst();
+	
+}
+
 
 function moveprev() {
 	current--;
@@ -86,12 +115,20 @@ function movenext() {
 }
 
 
+
+
 $(document).ready(function () {
 		if(length > 0) {
 			$('#title').html(cards[current].fields.title);
 			$('#define').html(cards[current].fields.meaning);
 			
 		}
+		$("#random").click(function(){
+			random();
+		});
+		$("#first").click(function(){
+			movefirst();
+		});
 		
 		$("#flip").click(function(){
 			$("#scard").toggleClass("flipped");
@@ -122,13 +159,13 @@ $(document).ready(function () {
 					var title = $.trim(cards[current].fields.title);
 					var word = $('#word').val();
 					
-					if (title.indexOf(word) != -1) {
+					if (word != "" && title === word) {
 						$('#word').val('');
 						$('#word').focus();
 						movenext();
 						$("#scard").toggleClass("flipped");
 					} else  {
-						alert("Try again!1");
+						alert("Try again!");
 						$('#word').focus();
 					}
 			    break;
