@@ -86,7 +86,6 @@ function setCard(index) {
 	$('#title').html(cards[index].fields.title);
 	$('#define').html(cards[index].fields.meaning);
 	imgurl = cards[index].fields.imageurl;
-	console.log(imgurl);
 	if(imgurl !="") {
 		$('#image').html("<img src="  + imgurl
 		+ " class='rounded'' style = 'text-align:center;max-height: 300px; max-width: 300px;'>");
