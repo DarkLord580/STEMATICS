@@ -63,7 +63,7 @@ body {
 
 .flipCard .scard .front {
   font-family: Georgia;
-  font-size: 3em;
+  font-size: 1em;
   text-align: center;
   line-height: 160px;
   background-color: #115fd4;
@@ -78,5 +78,5 @@ body {
   color: black;
   padding-top: 50px;
   font-family: Georgia;
-  font-size: 2em;
+  font-size: 12px;
 }

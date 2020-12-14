@@ -26,8 +26,7 @@ def index(request):
         watched = len(watchcardids)
     
     return render(request, "flashcards/index.html", {"cards": cards, "is_maker": is_maker, "watched":watched
-            , "jsonc" : serializers.serialize("json",cards)
-            , "jsonv" : serializers.serialize("json",watchcardids)})
+            , "jsonc" : serializers.serialize("json",cards)})
 
 
 def login_view(request):

@@ -4,21 +4,23 @@
 	<div>
     	{% if totalcategory  %}
     		<h2 class="card-title h2">Sets</h2>
-    		 <ul class="list-group">
+    			<div class="card-deck">
                 {% for category in categories %}
-					<div style="background-color:white; margin:10px;border-color:black;">
+					<div class="card">
+						<div class="card-body">
                     	<a href="{% url 'category' category.id %}">
-                    	<li class="list-group-card"><i class="fas fa-tshirt mr-5"></i> {{category.category}}</li>
+                    	<i class="fas fa-tshirt mr-5"></i> {{category.category}}
 						{% if category.imageurl %}
-    					<img src="{{category.imageurl}}" class="rounded" style = " text-align:center;max-height: 250px; max-width: 250px;">
+    					<img src="{{category.imageurl}}" class="rounded" style = " text-align:center;max-height: 100px; max-width: 100px;">
     					{% else %}
     					<img src="https://p7cdn4static.sharpschool.com/UserFiles/Servers/Server_1271683/Image/Meet%20the%20Candidates/No-Photo-Provided.png" class="rounded" style = " text-align:center;max-height: 250px; max-width: 250px;"">
     					{% 	endif %}
     					</a>
+						</div>
     				</div>
 					
                 {% endfor %}
-             </ul>	
+             </div>
         {% else %}
     		<h2 class="card-title h2">Set: {{category}}</h2>
     		<select class="browser-default custom-select" onchange="location = this.value;">
@@ -33,16 +35,22 @@
   						<div id = "scard" class="scard" onclick="this.classList.toggle('flipped');"> 
     						<div id="title" class="side front"></div> 
     						<div id="define" class="side back"></div>
+							
  						 </div> 
 				</div>
 				<div>
 					<center> 
-					
+					<div id="image"></div>
 					<button type="button" id ="first" class="btn btn-primary">First</button>
 					<button type="button" id ="prev" class="btn btn-primary">Prev</button>
 					<button type="button" id="next" class="btn btn-primary">Next</button>
 					<button type="button" id="flip" class="btn btn-primary" >Flip</button>
 					<button type="button" id ="random" class="btn btn-primary">Random</button>
+					</center> 
+				</div>
+				<div>
+					<center> 
+					<button type="button" id ="test" class="btn btn-secondary btn-sm">test</button>
 					 <input autofocus class="mx-sm-3 mb-2" type="text" name="word" id="word" placeholder="word" />
 					</center> 
 				</div>
@@ -60,7 +68,6 @@
 
 <script>
 const cards =  {{ jsonc | safe }};
-console.log(cards);
 const length = cards.length;
 var current = 0;
 
@@ -75,11 +82,23 @@ function shuffle(a) {
         a[j] = x;
     }
 }
+function setCard(index) {
+	$('#title').html(cards[index].fields.title);
+	$('#define').html(cards[index].fields.meaning);
+	imgurl = cards[index].fields.imageurl;
+	console.log(imgurl);
+	if(imgurl !="") {
+		$('#image').html("<img src="  + imgurl
+		+ " class='rounded'' style = 'text-align:center;max-height: 300px; max-width: 300px;'>");
+	}else {
+		$('#image').html('');
+	}
+	
+}
 
 function movefirst() {
 	current = 0;
-	$('#title').html(cards[current].fields.title);
-	$('#define').html(cards[current].fields.meaning);
+	setCard(current);
 	$('#scard').removeClass("flipped");
 }
 
@@ -97,8 +116,7 @@ function moveprev() {
 		current = 0;
 		
 	}  
-	$('#title').html(cards[current].fields.title);
-	$('#define').html(cards[current].fields.meaning);
+	setCard(current);
 	$('#scard').removeClass("flipped");
 }
 
@@ -108,8 +126,8 @@ function movenext() {
 		alert(" The last card \n Moving to the first card ")
 		current = 0;
 	}  
-	$('#title').html(cards[current].fields.title);
-	$('#define').html(cards[current].fields.meaning);
+	setCard(current);
+	
 	$('#scard').removeClass("flipped");
 	
 }
@@ -119,8 +137,7 @@ function movenext() {
 
 $(document).ready(function () {
 		if(length > 0) {
-			$('#title').html(cards[current].fields.title);
-			$('#define').html(cards[current].fields.meaning);
+			setCard(current);
 			
 		}
 		$("#random").click(function(){
@@ -140,10 +157,13 @@ $(document).ready(function () {
 		$("#next").click(function(){
 			movenext();
 		});
+		$("#test").click(function(){
+			random();
+			$("#scard").toggleClass("flipped");
+		});
 		
 	   $(document).keydown(function(e){
 			const keyvalue = e.keyCode;
-			console.log("keyvalue:" + keyvalue);
 			switch (keyvalue) {
   				case 37: // left
 					moveprev();

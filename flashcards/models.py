@@ -22,11 +22,13 @@ class Card(models.Model):
     title = models.CharField(max_length=128)
     meaning = models.TextField(default="")
     createdate = models.DateTimeField(auto_now_add=True)
+    imageurl = models.CharField(max_length=1024
+        ,default="")
     
 class NewCardForm(forms.ModelForm):
     class Meta:
        model = Card
-       fields = ["category","title", "meaning"]
+       fields = ["category","title", "meaning","imageurl"]
        
 class NewCategoryForm(forms.ModelForm):
     class Meta:

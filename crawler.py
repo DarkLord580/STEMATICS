@@ -13,8 +13,8 @@ from flashcards.models import *
 from bs4 import BeautifulSoup
 
  
-CONST_CATEGORY= ""
-CONST_URL= ''
+CONST_CATEGORY= "BUNIT14"
+CONST_URL= 'https://www.sadlierconnect.com/anonymous/viewResource.html?resourceID=70349&programTOCId=2681&alias=vw&eventId=h97sikyHNRo98ys6&eventValidation=7be584aa4afeb792c45d804a104e5fee._.I3Z7e1ea_QI6U-6clmR9dvJ1EYR_X6XwW6jyx7U4aygmeMJd2mpp0-vAUQxEP4-0Mm6bbzkP8uVXOwa-NPZ31g~~'
 driver = webdriver.Chrome('/usr/local/bin/chromedriver')
 driver.get(CONST_URL)
 driver.switch_to.frame('viewer')

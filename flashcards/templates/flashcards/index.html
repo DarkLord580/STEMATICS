@@ -19,10 +19,11 @@
     		{% for card in cards%}
 			
     		<div class="flipCard"> 
+				
+				<div id="btn-favorite" class="favorite"></div>
 				<a href="{% url 'viewcard' card.id %}">
 					<button type="button" class="btn btn-primary">View</button>
 				</a>
-				<div id="btn-favorite" class="favorite"></div>
   				<div id = "scard" class="scard" onclick="this.classList.toggle('flipped');"> 
     				<div id="title" class="side front">{{card.title}}</div> 
     				<div id="define" class="side back">{{card.meaning}}</div>
@@ -44,7 +45,6 @@
 {% block javascript %}
 <script>
 const cards =  {{ jsonc | safe }};
-const watchedcards =  {{ jsonv | safe }};
 
 const length = cards.length;
 var current = 0;
