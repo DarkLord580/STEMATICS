@@ -9,6 +9,8 @@ class User(AbstractUser):
     pass
 
 
+
+
 class Category(models.Model):
     category = models.CharField(max_length=128, default="")
     imageurl = models.CharField(max_length=1024

@@ -28,6 +28,10 @@ def index(request):
     return render(request, "flashcards/index.html", {"cards": cards, "is_maker": is_maker, "watched":watched})
 
 
+def typing(request):
+    return render(request, "flashcards/typing.html")
+
+
 def login_view(request):
     #print("####################################")
     #print ("         request log_in ")
