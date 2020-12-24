@@ -27,13 +27,14 @@
 <label for="timer">Timer:</label>
 <span id="timer">60</span>
 </div>
-<button onclick = "goAgain()">Go Again </button>
-<button onclick = "error()">errors</button>
-<button onclick = "timer()">start</button>
+<div id = "buttons">
+<button id ="goagain" onclick = "goAgain()">Go Again </button>
+<button id = "start" onclick = "timer()">start</button>
+</div>
 <div id="container">
 </div>
 <form>
-	<input type="text" id="input_word" name="intput_word">
+	<input type="text" id="input_word" name="input_word">
 </form>
 
 {% endblock %}
@@ -45,8 +46,9 @@ var myVar;
 var current = 0;
 var timeOut;
 var char = 0;
+var input = document.getElementById("input_word").value;
 
-var string = "Hello this is Sumin Choy";
+var string = "THIS IS SOME SAMPLE TEXT";
     string = string.split(" ");
 var stringArray = new Array();
 for(var i =0; i < string.length; i++){
@@ -55,54 +57,74 @@ for(var i =0; i < string.length; i++){
         continue;
     }
 }
+var length = stringArray.length;
+
+var errors = document.getElementById("errors_whole");
+errors.style.display = 'none';
+var character = document.getElementById("characters_whole");
+character.style.display = 'none';
+var words = document.getElementById("words_whole");
+words.style.display = 'none';
+$("#errors").html("0");
+$("#timer").html("60");
+$("#goagain").css("display", "none");
+$("#start").css("display", "block")
 
 for(var i = 0; i < stringArray.length; i++){
 	console.log(stringArray[i])
-	$('#container').append('<span>'+stringArray[i]+'</span>');
+	$('#container').append('<span id = \"' + i + ' \">'+stringArray[i] + " "+'</span>');
 }
+$("#input_word").val(" ");
 function goAgain() {
-	var errors = document.getElementById("errors_whole");
-	errors.style.display = errors.style.display === 'none' ? '' : 'none';
-	var character = document.getElementById("characters_whole");
-	character.style.display = character.style.display === 'none' ? '' : 'none';
-	var words = document.getElementById("words_whole");
-	words.style.display = words.style.display === 'none' ? '' : 'none';
-	document.getElementById("errors").innerHTML = 0;
-	document.getElementById("timer").innerHTML = 60;
+	$("#errors_whole").css("display", "none");
+	$("#characters_whole").css("display", "none");
+	$("#words_whole").css("display", "none");
+	$("#errors").html("0");
+	$("#timer").html("60");
+	$("#goagain").css("display", "none");
+	$("#start").css("display", "block");
+	$("#input_word").css("display", "block");
 	clearTimeout(myVar);
 }
 function error() {
-	 var error_name = document.getElementById("errors").innerHTML;
+	 var error_name = $("#errors").html();
 	 error_name = Number(error_name) + 1;
-	 document.getElementById("errors").innerHTML = error_name;
+	 $("#errors").html(error_name);
 }
 
 function time() {
-	if(document.getElementById("timer").innerHTML == 0){
-		document.getElementById("timer").innerHTML = 0;
+	if($("#timer").html() == 0){
+		$("#timer").html("0");
+		clearTimeout(myVar);
+		$("#errors_whole").css("display", "block");
+		$("#characters_whole").css("display", "block");
+		$("#words_whole").css("display", "block");
+		$("#goagain").css("display", "block");
+		$("#start").css("display", "none");
+		$("#input_word").css("display", "none");
 	} else {
-	 var timer_name = document.getElementById("timer").innerHTML;
+	 var timer_name = $("#timer").html();
 	 timer_name = Number(timer_name) - 1;
-	 document.getElementById("timer").innerHTML = timer_name;
+	 $("#timer").html(timer_name);
 	 }
 }
 function timer() { 
-		myVar = window.setInterval(time,1000)
+		myVar = window.setInterval(time,1);
 		if(document.getElementById("timer").innerHTML == 0){
-			clearTimeout(myVar)
+			clearTimeout(myVar);
+			$("#errors_whole").css("display", "block");
+			$("#characters_whole").css("display", "block");
+			$("#words_whole").css("display", "block");
 		}
 }
 
-function setcurrent(){
-	$('')
-}
+
 
 function nextword(){
-	current++;
-	if (current >= length) {
-		alert("you have reached the end of the typing test.")
+	if(current < length ){
+		current++;
 	}else{
-	setcurrent(current);
+		document.getElementById("input_word").style.display = 'none';
 	}
 }
 $(document).ready(function () {
@@ -110,20 +132,24 @@ $(document).ready(function () {
 	
    $(document).keydown(function(e){
 		const keyvalue = e.keyCode;
-		console.log("keyvalue:" + keyvalue);
 		switch (keyvalue) {
-				case 37: // left
-				moveprev();
+				case 32: // space
+				if (document.getElementById("input_word").value == " " +  stringArray[current]){
+					console.log(stringArray[current]);
+					console.log(document.getElementById("input_word").value);
+					$("#input_word").val('');
+					$("#"+ current).css('background-color', 'blue');
+					nextword();
+					
+					
+				}else{
+				$("#input_word").val('');
+				$("#" + current).css('background-color', 'red');
+				console.log(stringArray[current]);
+				nextword();	
+				error();
+				}
 			break;
-		  	case 39: // right
-				movenext();
-		  	break;
-			case 38: // up
-			case 40: // down 
-				$("#scard").toggleClass("flipped");
-		    break;
-		  	default:
-		    console.log(`Sorry, we are out of ${expr}.`);
 		}
 		
 		
@@ -131,5 +157,6 @@ $(document).ready(function () {
 
    
 });
+
 </script>
 {% endblock %}
