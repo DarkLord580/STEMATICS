@@ -1,0 +1,162 @@
+{% extends "layout.html" %}
+
+
+
+
+{% block title %}Typing Speed Test{% endblock %}
+
+
+
+
+{% block body %}
+
+<Div>Test your typing speed</Div>
+<div id = words_whole>
+<label for="words">words per minute:</label>
+<span id = "words">0</span>
+</div>
+<div id = characters_whole>
+<label for="characters">characters:</label>
+<span id = "characters">0</span>
+</div>
+<div id = errors_whole>
+<label for="errors">errors:</label>
+<span id = "errors">0</span>
+</div>
+<div id="whole_timer">
+<label for="timer">Timer:</label>
+<span id="timer">60</span>
+</div>
+<div id = "buttons">
+<button id ="goagain" onclick = "goAgain()">Go Again </button>
+<button id = "start" onclick = "timer()">start</button>
+</div>
+<div id="container">
+</div>
+<form>
+	<input type="text" id="input_word" name="input_word">
+</form>
+
+{% endblock %}
+
+
+{% block javascript %}
+<script>
+var myVar;
+var current = 0;
+var timeOut;
+var char = 0;
+var input = document.getElementById("input_word").value;
+
+var string = "THIS IS SOME SAMPLE TEXT";
+    string = string.split(" ");
+var stringArray = new Array();
+for(var i =0; i < string.length; i++){
+    stringArray.push(string[i]);
+    if(i != string.length-1){
+        continue;
+    }
+}
+var length = stringArray.length;
+
+var errors = document.getElementById("errors_whole");
+errors.style.display = 'none';
+var character = document.getElementById("characters_whole");
+character.style.display = 'none';
+var words = document.getElementById("words_whole");
+words.style.display = 'none';
+$("#errors").html("0");
+$("#timer").html("60");
+$("#goagain").css("display", "none");
+$("#start").css("display", "block")
+
+for(var i = 0; i < stringArray.length; i++){
+	console.log(stringArray[i])
+	$('#container').append('<span id = \"' + i + ' \">'+stringArray[i] + " "+'</span>');
+}
+$("#input_word").val(" ");
+function goAgain() {
+	$("#errors_whole").css("display", "none");
+	$("#characters_whole").css("display", "none");
+	$("#words_whole").css("display", "none");
+	$("#errors").html("0");
+	$("#timer").html("60");
+	$("#goagain").css("display", "none");
+	$("#start").css("display", "block");
+	$("#input_word").css("display", "block");
+	clearTimeout(myVar);
+}
+function error() {
+	 var error_name = $("#errors").html();
+	 error_name = Number(error_name) + 1;
+	 $("#errors").html(error_name);
+}
+
+function time() {
+	if($("#timer").html() == 0){
+		$("#timer").html("0");
+		clearTimeout(myVar);
+		$("#errors_whole").css("display", "block");
+		$("#characters_whole").css("display", "block");
+		$("#words_whole").css("display", "block");
+		$("#goagain").css("display", "block");
+		$("#start").css("display", "none");
+		$("#input_word").css("display", "none");
+	} else {
+	 var timer_name = $("#timer").html();
+	 timer_name = Number(timer_name) - 1;
+	 $("#timer").html(timer_name);
+	 }
+}
+function timer() { 
+		myVar = window.setInterval(time,1);
+		if(document.getElementById("timer").innerHTML == 0){
+			clearTimeout(myVar);
+			$("#errors_whole").css("display", "block");
+			$("#characters_whole").css("display", "block");
+			$("#words_whole").css("display", "block");
+		}
+}
+
+
+
+function nextword(){
+	if(current < length ){
+		current++;
+	}else{
+		document.getElementById("input_word").style.display = 'none';
+	}
+}
+$(document).ready(function () {
+	
+	
+   $(document).keydown(function(e){
+		const keyvalue = e.keyCode;
+		switch (keyvalue) {
+				case 32: // space
+				if (document.getElementById("input_word").value == " " +  stringArray[current]){
+					console.log(stringArray[current]);
+					console.log(document.getElementById("input_word").value);
+					$("#input_word").val('');
+					$("#"+ current).css('background-color', 'blue');
+					nextword();
+					
+					
+				}else{
+				$("#input_word").val('');
+				$("#" + current).css('background-color', 'red');
+				console.log(stringArray[current]);
+				nextword();	
+				error();
+				}
+			break;
+		}
+		
+		
+   });
+
+   
+});
+
+</script>
+{% endblock %}
