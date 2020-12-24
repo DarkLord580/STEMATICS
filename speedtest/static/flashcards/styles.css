@@ -80,3 +80,18 @@ body {
   font-family: Georgia;
   font-size: 2em;
 }
+
+
+
+
+
+
+
+
+.correct {
+	background-color:blue;
+}
+
+.wrong {
+	background-color:red;
+}

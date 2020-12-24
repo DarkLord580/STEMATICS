@@ -22,7 +22,12 @@ def index(request):
 
 
 def typing(request):
-    return render(request, "typing.html")
+    list = []
+    for i in range(0,14):
+        list.append(i)
+        
+    
+    return render(request, "typing.html" , {"list": list})
 
 
 def login_view(request):

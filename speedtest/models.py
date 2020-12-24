@@ -10,3 +10,8 @@ class User(AbstractUser):
 
 
 
+
+class TestString(models.Model):
+    string = models.TextField(default="")
+    createdate = models.DateTimeField(auto_now_add=True)
+ 

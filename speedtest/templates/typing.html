@@ -32,6 +32,9 @@
 <button id = "start" onclick = "timer()">start</button>
 </div>
 <div id="container">
+{% for i in list  %}
+    <span id= "{{i}}" class>Item15</span>
+{% endfor %}
 </div>
 <form>
 	<input type="text" id="input_word" name="input_word">
@@ -46,7 +49,7 @@ var myVar;
 var current = 0;
 var timeOut;
 var char = 0;
-var input = document.getElementById("input_word").value;
+var input = $("#input_word").val();
 
 var string = "THIS IS SOME SAMPLE TEXT";
     string = string.split(" ");
@@ -57,23 +60,26 @@ for(var i =0; i < string.length; i++){
         continue;
     }
 }
+
 var length = stringArray.length;
 
-var errors = document.getElementById("errors_whole");
-errors.style.display = 'none';
-var character = document.getElementById("characters_whole");
-character.style.display = 'none';
-var words = document.getElementById("words_whole");
-words.style.display = 'none';
+/*
+function make_spans() {
+	for(var i = 0; i < stringArray.length; i++){
+		console.log(stringArray[i])
+		$('#container').append('<span id = \"' + stringArray[i] + '  class \">'+stringArray[i] + " "+'</span>');
+	}
+}
+*/
+$("#errors_whole").css("display", "none");
+$("#characters_whole").css("display", "none");
+$("#words_whole").css("display", "none");
 $("#errors").html("0");
 $("#timer").html("60");
 $("#goagain").css("display", "none");
 $("#start").css("display", "block")
 
-for(var i = 0; i < stringArray.length; i++){
-	console.log(stringArray[i])
-	$('#container').append('<span id = \"' + i + ' \">'+stringArray[i] + " "+'</span>');
-}
+
 $("#input_word").val(" ");
 function goAgain() {
 	$("#errors_whole").css("display", "none");
@@ -84,6 +90,7 @@ function goAgain() {
 	$("#goagain").css("display", "none");
 	$("#start").css("display", "block");
 	$("#input_word").css("display", "block");
+	current = 0;
 	clearTimeout(myVar);
 }
 function error() {
@@ -102,6 +109,7 @@ function time() {
 		$("#goagain").css("display", "block");
 		$("#start").css("display", "none");
 		$("#input_word").css("display", "none");
+		current = 0;
 	} else {
 	 var timer_name = $("#timer").html();
 	 timer_name = Number(timer_name) - 1;
@@ -110,26 +118,28 @@ function time() {
 }
 function timer() { 
 		myVar = window.setInterval(time,1);
-		if(document.getElementById("timer").innerHTML == 0){
+		if($("#timer").html == 0){
 			clearTimeout(myVar);
 			$("#errors_whole").css("display", "block");
 			$("#characters_whole").css("display", "block");
 			$("#words_whole").css("display", "block");
 		}
 }
-
-
+function make_correct() {
+	$("#1").addClass('correct');
+}
 
 function nextword(){
-	if(current < length ){
-		current++;
+	if(current >= length ){
+		$("#input_word").css("display", "none");
 	}else{
-		document.getElementById("input_word").style.display = 'none';
+		current ++;
 	}
 }
 $(document).ready(function () {
 	
-	
+	//make_spans();
+	make_correct();
    $(document).keydown(function(e){
 		const keyvalue = e.keyCode;
 		switch (keyvalue) {
@@ -138,13 +148,14 @@ $(document).ready(function () {
 					console.log(stringArray[current]);
 					console.log(document.getElementById("input_word").value);
 					$("#input_word").val('');
-					$("#"+ current).css('background-color', 'blue');
+					$("#"+stringArray[current]).addClass('correct');
+					console.log($("#"+current));
 					nextword();
 					
 					
 				}else{
 				$("#input_word").val('');
-				$("#" + current).css('background-color', 'red');
+				$("#"+ current).addClass('wrong');
 				console.log(stringArray[current]);
 				nextword();	
 				error();
