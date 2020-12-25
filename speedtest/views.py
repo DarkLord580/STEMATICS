@@ -11,6 +11,10 @@ from django.contrib.admin.templatetags.admin_list import items_for_result
 from django.utils.timezone import now
 from django.core import serializers
 import json
+import random
+from speedtest.models import TestString
+from django.http import JsonResponse
+
 
 
 
@@ -20,14 +24,34 @@ def index(request):
     print("####################################")
     return render(request, "index.html")
 
+def getstring(request):
+    stringA = TestString.objects.all()
+    string = stringA[int(random.uniform(0, len(stringA)))]
+    string = string.string  
+    stringArray = string.split()
+    return JsonResponse({"message": "Done","status":201, "strArr": stringArray})
+
 
 def typing(request):
+    stringA = TestString.objects.all()
+    string = stringA[int(random.uniform(0, len(stringA)))]
+    string = string.string  
+    stringArray = string.split()
+    print(stringArray)
     list = []
-    for i in range(0,14):
+    for i in range(0,len(stringArray)):
         list.append(i)
-        
+    zipped_list = zip(list, stringArray)
     
-    return render(request, "typing.html" , {"list": list})
+    return render(request, "typing.html" , {"list": zipped_list, "string" : string})
+
+
+#def savescore(request):
+ #   data = json.loads(request.body)
+  #  wpm = data.score
+  #  scoresaver = Score(wpm = int(wpm))
+   # scoresaver.save()
+    #return JsonResponse({"message": "Done","status":201})
 
 
 def login_view(request):

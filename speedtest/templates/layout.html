@@ -28,10 +28,6 @@
             
             {% if user.is_authenticated %}
             	<li class="nav-item">
-                    <a class="nav-link" href="{% url 'watchcard' %}">Watched Cards
-                    {% if watched%}
-                    ({{watched}})
-                    {% endif%}
                     </a>
                 </li>
                 {% if is_maker %}

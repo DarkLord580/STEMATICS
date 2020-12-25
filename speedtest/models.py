@@ -14,4 +14,7 @@ class User(AbstractUser):
 class TestString(models.Model):
     string = models.TextField(default="")
     createdate = models.DateTimeField(auto_now_add=True)
- 
+class Score(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    wpm = models.IntegerField(default="")
+    createdate = models.DateTimeField(auto_now_add=True)

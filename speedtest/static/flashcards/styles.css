@@ -89,9 +89,9 @@ body {
 
 
 .correct {
-	background-color:blue;
+	color:blue;
 }
 
 .wrong {
-	background-color:red;
+	color:red;
 }

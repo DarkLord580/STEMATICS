@@ -32,8 +32,8 @@
 <button id = "start" onclick = "timer()">start</button>
 </div>
 <div id="container">
-{% for i in list  %}
-    <span id= "{{i}}" class>Item15</span>
+{% for i,j in list  %}
+    <span id= "{{i}}" class>{{j}}</span>
 {% endfor %}
 </div>
 <form>
@@ -51,7 +51,7 @@ var timeOut;
 var char = 0;
 var input = $("#input_word").val();
 
-var string = "THIS IS SOME SAMPLE TEXT";
+var string = "{{string}}";
     string = string.split(" ");
 var stringArray = new Array();
 for(var i =0; i < string.length; i++){
@@ -63,24 +63,28 @@ for(var i =0; i < string.length; i++){
 
 var length = stringArray.length;
 
-/*
-function make_spans() {
-	for(var i = 0; i < stringArray.length; i++){
-		console.log(stringArray[i])
-		$('#container').append('<span id = \"' + stringArray[i] + '  class \">'+stringArray[i] + " "+'</span>');
+
+function make_spans(array) {
+	console.log("make_spans\n#############\n",array);
+	$('#container').empty();
+	console.log("in the make_spans function!");
+	console.log(array.length);
+	for(var i = 0; i < array.length; i++){
+		console.log('<span id = \"' + i + '\"  class \">'+array[i] + " "+'</span>');
+		$('#container').append('<span id = \"' + i + '  class = \"\">'+array[i] + " "+'</span>');
 	}
 }
-*/
-$("#errors_whole").css("display", "none");
-$("#characters_whole").css("display", "none");
-$("#words_whole").css("display", "none");
-$("#errors").html("0");
-$("#timer").html("60");
-$("#goagain").css("display", "none");
-$("#start").css("display", "block")
+function init(){
+	$("#errors_whole").css("display", "none");
+	$("#characters_whole").css("display", "none");
+	$("#words_whole").css("display", "none");
+	$("#errors").html("0");
+	$("#timer").html("60");
+	$("#goagain").css("display", "none");
+	$("#start").css("display", "block")
+	$("#input_word").val(" ");
+}
 
-
-$("#input_word").val(" ");
 function goAgain() {
 	$("#errors_whole").css("display", "none");
 	$("#characters_whole").css("display", "none");
@@ -110,7 +114,7 @@ function time() {
 		$("#start").css("display", "none");
 		$("#input_word").css("display", "none");
 		current = 0;
-	} else {
+		} else {
 	 var timer_name = $("#timer").html();
 	 timer_name = Number(timer_name) - 1;
 	 $("#timer").html(timer_name);
@@ -125,30 +129,46 @@ function timer() {
 			$("#words_whole").css("display", "block");
 		}
 }
-function make_correct() {
-	$("#1").addClass('correct');
-}
+
 
 function nextword(){
-	if(current >= length ){
-		$("#input_word").css("display", "none");
+	if(current >= length -1){
+		$.ajax({
+			type: "GET",
+			url: "/getstring",
+			dataType: "json",
+			success: function (msg, status) {
+				
+				
+				
+				
+			if (msg) {
+				//alert(msg.strArr);
+				make_spans(msg.strArr);
+				current = 0;
+				length = msg.strArr.length;
+				console.log("Done");
+	           } else {
+				console.log("Cannot add to Post !");
+	           }
+	       },
+		});
 	}else{
 		current ++;
 	}
 }
+
 $(document).ready(function () {
-	
-	//make_spans();
-	make_correct();
+	init();
    $(document).keydown(function(e){
 		const keyvalue = e.keyCode;
 		switch (keyvalue) {
-				case 32: // space
+				case 32: case 13: // space, Enter
 				if (document.getElementById("input_word").value == " " +  stringArray[current]){
 					console.log(stringArray[current]);
 					console.log(document.getElementById("input_word").value);
 					$("#input_word").val('');
-					$("#"+stringArray[current]).addClass('correct');
+					$("#"+current).addClass('correct');
 					console.log($("#"+current));
 					nextword();
 					
