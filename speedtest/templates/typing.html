@@ -9,7 +9,7 @@
 
 
 {% block body %}
-
+<div></div>
 <Div>Test your typing speed</Div>
 <div id = words_whole>
 <label for="words">words per minute:</label>
@@ -114,6 +114,29 @@ function time() {
 		$("#start").css("display", "none");
 		$("#input_word").css("display", "none");
 		current = 0;
+		var score = $("#words").html();
+		alert("[" + score.length + "]" );
+		if(score.length == 0) {
+			return;
+		}
+		console.log(score);
+		var post_data = {
+				score: score
+	       };
+		$.ajax({
+			type: "POST",
+			url: "/save",
+			dataType: "json",
+			success: function (msg) {
+			if (msg) {
+				console.log("Done");
+	           } else {
+				console.log("Cannot add to leader board!");
+	           }
+	       },
+			data: JSON.stringify(post_data)
+		});
+		alert("finished ajax");
 		} else {
 	 var timer_name = $("#timer").html();
 	 timer_name = Number(timer_name) - 1;

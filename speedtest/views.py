@@ -4,16 +4,16 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-
-
 from speedtest.models import *
 from django.contrib.admin.templatetags.admin_list import items_for_result
 from django.utils.timezone import now
 from django.core import serializers
 import json
+from .models import *
 import random
 from speedtest.models import TestString
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 
@@ -123,5 +123,22 @@ def score(request):
     
     return render(request,"score.html", ) 
 
+
+
+@csrf_exempt
+@login_required(login_url='/login')
+def save(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
     
+    data = json.loads(request.body)
+    print("request user ==========",request.user)
+    print("request user ==========",type(request.user))
+    wordpm = data.get("score")
+    scoreboard = Score(
+        user = request.user,
+        wpm = int(wordpm)
+    )   
+    scoreboard.save()
+    return JsonResponse({"message": "Post created successfully.", "status": 201})
 
