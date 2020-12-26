@@ -4,11 +4,11 @@ This is a website which allows the user to take a typing test. After the test, t
 
 Here is some of the Technologies used: 
 
-Django
-Sqlite3
-Bootstrap
-jquery
-Ajax
+- Django
+- Sqlite3
+- Bootstrap
+- jquery
+- Ajax
 
 ## How the webpage works?
 
@@ -34,4 +34,5 @@ As all applications this one can also be improved. Possible improvements:
 3. Run command `python3 manage.py migrate` to migrate.
 4. Run command `python3 manage.py createsuperuser` to make an admin.
 5. Run command `python3 manage.py runserver` to make the server run.
-6. You are ready to go!
+6. Go to your web browser and type in `http://127.0.0.1:8000/` for the website.
+7. You are ready to go!
