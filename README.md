@@ -18,6 +18,7 @@ When the user presses the space bar, the program will get the value inside of th
 ### Database
 
 Database stores all users, the scores they got for each test and the sample texts for the typing test.
+For test data, you can run `python3 test_populate` for it to make some typing test. 
 
 ## Possible improvements
 
