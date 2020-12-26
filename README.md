@@ -1,10 +1,37 @@
-**Getting Started**
+# CS50 Final Project - Typing Test
+
+This is a website which allows the user to take a typing test. After the test, the website will show how many words he misspelled, how many words he spelled correctly, and how many correct characters he typed.
+
+Here is some of the Technologies used: 
+
+Django
+Sqlite3
+Bootstrap
+jquery
+Ajax
+
+## How the webpage works?
+
+When the user presses the space bar, the program will get the value inside of the input and compare it to the word that is being typed. If it is correct, it will make the current word into blue by adding a class called correct and move the current word into the next word
+. It will also add 1 to the corrent word count and add the length of the current word to correct character count. If it is incorrect it will make the current word into red by adding a class caleed wrong and move the current word into the next word and adding 1 to error count. When the timer hits to 0, the input box becomes hidden and the error count, correct word count, and the correct character count becomes shown. Then correct word count will be then stored in the db so that the user can see them again in score.
+
+### Database
+
+Database stores all users, the scores they got for each test and the sample texts for the typing test.
+
+## Possible improvements
+
+As all applications this one can also be improved. Possible improvements:
+
+- Make it so that the timer starts when a person types something.
+- Make the sample text more random.
 
 
-for this you will need everything except the db.sqlite3 and other files that are related to db. After that you will need to make migrations using the command "python3 manage.py makemigrations" and then migrating it with "python3 manage.py migrate". Then make a super user(admin) for the website with the code "python3 manage.py makesuperuser". I made a code for putting texts for typing and you can run that by "python3 test_populate.py"
+## How to launch application
 
-
-**website**
-
-
-this website allows the user to take a typing speed test which after you take it will show how many words you got wrong, how many you got right and how many characters you got right. To start this, you will have to click the typing test. Then you will be lead to a page with some text, a start button, and a input box. After you type in some string for the program, the program will change the color to blue if you got the word correctly and red if you got it incorrectly. After taking the test, you will be able to go again with the button saying Go Again. Finally there is a tab with scores. That will show you the correct words that you got, and the date ordered in chorological order.
+1. Get the code and delete the db files.
+2. Run command `python3 manage.py makemigrations` to make migrations.
+3. Run command `python3 manage.py migrate` to migrate.
+4. Run command `python3 manage.py createsuperuser` to make an admin.
+5. Run command `python3 manage.py runserver` to make the server run.
+6. You are ready to go!
